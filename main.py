@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from redis import Redis
-from routers import test
+from routers import test, events
 
 app = FastAPI()
 
@@ -14,3 +14,4 @@ async def shutdown():
     app.state.redis.close()
 
 app.include_router(test.router, prefix='/test', tags=['Test'])
+app.include_router(events.router, prefix='/events', tags=['Event'])
