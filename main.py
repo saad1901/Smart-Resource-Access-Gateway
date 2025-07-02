@@ -8,6 +8,7 @@ app = FastAPI()
 async def startup():
     app.state.redis = Redis(host='127.0.0.1', port=6379, decode_responses=True)
 
+
 @app.on_event("shutdown")
 async def shutdown():
     app.state.redis.close()

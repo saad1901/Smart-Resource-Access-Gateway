@@ -1,4 +1,4 @@
-# 🔐 Smart Resource Access Gateway (FastAPI + JWT + AWS)
+# 🔐 Smart Resource Access Gateway (FastAPI + JWT)
 
 A production-ready API gateway built with **FastAPI**, designed to authenticate users and issue **resource-scoped JWT tokens** for accessing separate service backends (e.g., hotel, event management, hospital systems, etc.).
 
@@ -6,11 +6,11 @@ This project features **rate-limiting (Redis)**, **audit logging (AWS S3 or Dyna
 
 ---
 
-## 📽️ Loom Demo Videos
+## 📽️ Explaination Videos
 
 | Feature                    | Watch                                      |
 |---------------------------|---------------------------------------------|
-| 🔑 Intro and Setting Up Project | [Intro](https://www.loom.com/share/43def7e61f29475cb7a7cbbda0e50ad6?sid=60e641af-0ede-4e55-8ec4-8f7ff790cf20) |
+| 🔑 Intro and Setting Up Project | [Intro](https://www.loom.com/share/2edf0ae02e6c486f97fa14a314e5934a?sid=70952695-47b1-48bc-97a4-e5b5d5a14ba4) |
 | 🔑 Login + Token Issuance | [Loom Video 1](https://www.loom.com/share/your-video-token) |
 | 🎫 Resource Access Control| [Loom Video 2](https://www.loom.com/share/your-video-token) |
 | 🚦 Rate Limiting & Alerts | [Loom Video 3](https://www.loom.com/share/your-video-token) |
