@@ -168,5 +168,5 @@ smart-access-gateway/
 ## 🧑‍🎓 Author
 **Mohammad Saad**  
 Backend + Cloud + Security Enthusiast  
-🌐 GitHub: [@MohammadSaad07](https://github.com/MohammadSaad07)  
-📌 LinkedIn: [Add link here]
+🌐 GitHub: [@saad1901](https://github.com/saad1901)  
+📌 LinkedIn: [https://www.linkedin.com/in/saad99]
