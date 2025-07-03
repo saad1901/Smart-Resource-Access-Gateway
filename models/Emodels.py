@@ -1,4 +1,4 @@
-from dependencies import Base
+from config.dependencies import Base
 from sqlalchemy import Column, Integer, String, Text, Boolean, DateTime, ForeignKey, Numeric, Date, Time, UUID, Enum, Table, UniqueConstraint
 from sqlalchemy.orm import relationship
 from datetime import datetime

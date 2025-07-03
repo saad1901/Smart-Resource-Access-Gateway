@@ -1,16 +1,27 @@
 from fastapi import APIRouter, Depends
-from dependencies import db_inj
-from models import Upis, Participant, Tournament
-from pdmodel import UpiInBody
+from config.dependencies import db_inj, get_redis
+from models.Emodels import Upis, Participant, Tournament
+from structure.pdmodel import UpiInBody
+import json
 
 router = APIRouter()
 
 @router.get('/')
-async def upi_ids(db : db_inj):
-    upis = db.query(Upis).all()
+async def upi_ids(db : db_inj, redis = Depends(get_redis)):
 
+    print("Not Found in Redis")
+    upis = db.query(Upis).all()
+    upis_list = [
+        {
+            "id": u.id,
+            "name": u.name,
+            "nickname": u.nickname,
+            "upi_id": u.upi_id,
+        } for u in upis
+    ]
     if upis:
-        return upis
+        # redis.set('users:all',json.dumps(upis_list))
+        return upis_list
     
     return 'No UPI IDs Found'
 

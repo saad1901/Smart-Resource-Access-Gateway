@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from dependencies import get_redis
+from config.dependencies import get_redis
 
 router = APIRouter()
 
