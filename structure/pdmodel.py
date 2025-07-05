@@ -37,3 +37,6 @@ class EventOut(BaseModel):
     entry_fee : float
     upi_id_id : int
   
+class UserIn(BaseModel):
+    username : str
+    passwword : str
