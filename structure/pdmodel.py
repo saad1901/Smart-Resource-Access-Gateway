@@ -39,4 +39,9 @@ class EventOut(BaseModel):
   
 class UserIn(BaseModel):
     username : str
-    passwword : str
+    password : str
+
+class UserAdd(BaseModel):
+    username     : str
+    password     : str
+    email        : str
