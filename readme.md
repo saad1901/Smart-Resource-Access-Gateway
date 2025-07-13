@@ -26,6 +26,18 @@
 
 ---
 
+## 📽️ Explaination Videos
+
+| Feature                    | Watch                                      |
+|---------------------------|---------------------------------------------|
+| 🧠 Intro and Setting Up Project | [LINK](https://www.loom.com/share/4560dc9c0512475a807ecb0e989af0cb?sid=6b30c01a-62ad-47cd-86b7-e237c40c4fd1) |
+| 📦 Project Setup & Databases | [LINK](https://www.loom.com/share/4131970b521e479da35a90d11a20eb33?sid=36e4df4d-dfbb-4698-b359-e2c99d8c5c09) |
+| 🎫 JWT Encoding | [LINK](https://www.loom.com/share/2970c725894a40ccbc9ada1b1b7ab181?sid=b89c08ba-8d95-4bd5-9958-5b605d350b0d) |
+| 🎫 Hash & JWT Decoding | [LINK](https://www.loom.com/share/72d0465376644404b62d102005dd7450?sid=b00bb99e-bd63-414f-a1bb-4e4f64f7fc9a) |
+| 🎫 Dockerizing App | [LINK](https://www.loom.com/share/a30837310ccd43a2922f35b71b789caf?sid=b787a969-2d72-482d-b177-47fb1a313efe) |
+
+---
+
 ## 🔄 Authentication & Request Flow
 
 ### 1️⃣ JWT Authentication Flow
