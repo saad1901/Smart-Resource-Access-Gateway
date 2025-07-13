@@ -1,7 +1,7 @@
 from config.dependencies import Base
 from sqlalchemy import Column, Integer, String, Text, Boolean, DateTime, ForeignKey, Numeric, Date, Time, UUID, Enum, Table, UniqueConstraint
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 from enum import Enum as PyEnum
 
@@ -10,7 +10,7 @@ tournament_additional_images = Table(
     'tournament_additional_images',
     Base.metadata,
     Column('tournament_id', Integer, ForeignKey('app_tournament.id')),
-    Column('image_id', Integer, ForeignKey('app_tournament_images.id'))
+    Column('image_id', Integer, ForeignKey('app_tournament_image.id'))
 )
 
 class CategoryType(str, PyEnum):
@@ -22,7 +22,7 @@ class CategoryType(str, PyEnum):
     OTHER = 'other'
 
 class Category(Base):
-    __tablename__ = 'app_categories'
+    __tablename__ = 'app_category'
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
     slug = Column(String(255), unique=True)
@@ -33,20 +33,20 @@ class Category(Base):
     type = Column(String(20))
     tournaments = relationship("Tournament", back_populates="category")
 
-class TournamentImage(Base):
-    __tablename__ = 'app_tournament_images'
-    id = Column(Integer, primary_key=True)
-    tournament_id = Column(Integer, ForeignKey('app_tournament.id'), nullable=True)
-    image = Column(String(255))
-    caption = Column(String(200), nullable=True)
-    is_primary = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    tournament = relationship("Tournament", back_populates="tournament_images", foreign_keys=[tournament_id])
-    additional_tournaments = relationship(
-        "Tournament",
-        secondary=tournament_additional_images,
-        back_populates="additional_images"
-    )
+# class TournamentImage(Base):
+#     __tablename__ = 'app_tournamentimage'
+#     id = Column(Integer, primary_key=True)
+#     tournament_id = Column(Integer, ForeignKey('app_tournament.id'), nullable=True)
+#     image = Column(String(255))
+#     caption = Column(String(200), nullable=True)
+#     is_primary = Column(Boolean, default=False)
+#     created_at = Column(DateTime, default=datetime.utcnow)
+#     tournament = relationship("Tournament", back_populates="tournament_images", foreign_keys=[tournament_id])
+    # additional_tournaments = relationship(
+    #     "Tournament",
+    #     secondary=tournament_additional_images,
+    #     back_populates="additional_images"
+    # )
 
 class Upis(Base):
     __tablename__ = 'app_upis'
@@ -71,8 +71,8 @@ class Tournament(Base):
     title = Column(String(200), nullable=False)
     slug = Column(String(255), unique=True)
     description = Column(Text)
-    category_id = Column(Integer, ForeignKey('app_categories.id'))
-    organizer_id = Column(Integer, ForeignKey('users.id'), nullable=True)
+    category_id = Column(Integer, ForeignKey('app_category.id'))
+    organizer_id = Column(Integer, ForeignKey('auth_user.id'), nullable=True)
     start_date = Column(Date)
     end_date = Column(Date)
     tournament_time = Column(Time, default=datetime.strptime('10:00', '%H:%M').time())
@@ -89,7 +89,7 @@ class Tournament(Base):
     prize_pool = Column(Numeric(10, 2))
     tournament_format = Column(String(100))
     rules = Column(Text)
-    banner_image = Column(String(255))
+    banner_image = Column(String(255),nullable=True)
     status = Column(String(20), default='draft')
     is_featured = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -103,12 +103,12 @@ class Tournament(Base):
     category = relationship("Category", back_populates="tournaments")
     organizer = relationship("User", back_populates="organized_tournaments")
     upi = relationship("Upis", back_populates="tournaments")
-    tournament_images = relationship("TournamentImage", back_populates="tournament", foreign_keys=[TournamentImage.tournament_id])
-    additional_images = relationship(
-        "TournamentImage",
-        secondary=tournament_additional_images,
-        back_populates="additional_tournaments"
-    )
+    # tournament_images = relationship("TournamentImage", back_populates="tournament", foreign_keys=[TournamentImage.tournament_id])
+    # additional_images = relationship(
+    #     "TournamentImage",
+    #     secondary=tournament_additional_images,
+    #     back_populates="additional_tournaments"
+    # )
     participants = relationship("Participant", back_populates="tournament")
     prizes = relationship("TournamentPrize", back_populates="tournament")
     sponsors = relationship("TournamentSponsor", back_populates="tournament")
@@ -121,7 +121,7 @@ class PaymentStatus(str, PyEnum):
     REFUNDED = 'refunded'
 
 class Transaction(Base):
-    __tablename__ = 'app_transactions'
+    __tablename__ = 'app_transaction'
     id = Column(Integer, primary_key=True)
     amount = Column(Numeric(10, 2))
     payment_status = Column(String(20), default='pending')
@@ -166,7 +166,7 @@ class Participant(Base):
     check_in_time = Column(DateTime, nullable=True)
     special_requirements = Column(Text, nullable=True)
     notes = Column(Text, nullable=True)
-    transaction_id = Column(Integer, ForeignKey('app_transactions.id'), unique=True)
+    transaction_id = Column(Integer, ForeignKey('app_transaction.id'), unique=True)
     optinWhatsapp = Column(Boolean, default=True)
     tournament = relationship("Tournament", back_populates="participants")
     transaction = relationship("Transaction", back_populates="participant", uselist=False)
@@ -177,7 +177,7 @@ class Participant(Base):
     )
 
 class TournamentPrize(Base):
-    __tablename__ = 'tournament_prizes'
+    __tablename__ = 'app_tournamentprize'
     id = Column(Integer, primary_key=True)
     tournament_id = Column(Integer, ForeignKey('app_tournament.id'))
     position = Column(Integer)
@@ -191,7 +191,7 @@ class TournamentPrize(Base):
     )
 
 class TournamentSponsor(Base):
-    __tablename__ = 'tournament_sponsors'
+    __tablename__ = 'app_tournamentsponsor'
     id = Column(Integer, primary_key=True)
     tournament_id = Column(Integer, ForeignKey('app_tournament.id'))
     name = Column(String(200))
@@ -203,7 +203,7 @@ class TournamentSponsor(Base):
     tournament = relationship("Tournament", back_populates="sponsors")
 
 class TournamentAnnouncement(Base):
-    __tablename__ = 'tournament_announcements'
+    __tablename__ = 'app_tournamentannouncement'
     id = Column(Integer, primary_key=True)
     tournament_id = Column(Integer, ForeignKey('app_tournament.id'))
     title = Column(String(200))
@@ -232,7 +232,7 @@ class ChessSection(str, PyEnum):
     U1000 = 'u1000'
 
 class ChessPlayer(Base):
-    __tablename__ = 'chess_players'
+    __tablename__ = 'app_chessplayer'
     participant_id = Column(Integer, ForeignKey('app_participant.id'), primary_key=True)
     fide_id = Column(String(20), nullable=True)
     national_id = Column(String(20), nullable=True)
@@ -250,7 +250,7 @@ class ChessPlayer(Base):
     participant = relationship("Participant", back_populates="chess_profile", uselist=False)
 
 class LogModal(Base):
-    __tablename__ = 'log_modals'
+    __tablename__ = 'app_logmodal'
     id = Column(Integer, primary_key=True)
     sec = Column(String(100), nullable=True)
     key = Column(String(100), nullable=True)
@@ -258,7 +258,7 @@ class LogModal(Base):
     sec_id = Column(Integer, nullable=True)
 
 class EventData(Base):
-    __tablename__ = 'event_data'
+    __tablename__ = 'app_eventdata'
     id = Column(Integer, primary_key=True)
     name = Column(String(80), nullable=True)
     email = Column(String(50), nullable=True)
@@ -267,7 +267,7 @@ class EventData(Base):
     add = Column(String(150), nullable=True)
 
 class ApiData(Base):
-    __tablename__ = 'api_data'
+    __tablename__ = 'app_apidata'
     id = Column(Integer, primary_key=True)
     sid = Column(String(150), nullable=True)
     token = Column(String(150), nullable=True)
@@ -275,10 +275,20 @@ class ApiData(Base):
     active = Column(Boolean, default=True)
 
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = 'auth_user'
     id = Column(Integer, primary_key=True)
     password = Column(String)
     username = Column(String)
+    first_name = Column(String)
+    last_name = Column(String)
     email = Column(String)
+    date_joined = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     is_superuser = Column(Boolean, default=False)
+    is_staff = Column(Boolean, default=True)
+    is_active = Column(Boolean, default=True)
     organized_tournaments = relationship("Tournament", back_populates="organizer")
+
+class BlackJWT(Base):
+    __tablename__ = 'app_blacklist'
+    id = Column(Integer, primary_key=True)
+    token = Column(String)

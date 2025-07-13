@@ -14,7 +14,7 @@ This project features **rate-limiting (Redis)**, **audit logging (AWS S3 or Dyna
 | 📦 Project Setup & Databases | [LINK](https://www.loom.com/share/4131970b521e479da35a90d11a20eb33?sid=36e4df4d-dfbb-4698-b359-e2c99d8c5c09) |
 | 🎫 JWT Encoding | [LINK](https://www.loom.com/share/2970c725894a40ccbc9ada1b1b7ab181?sid=b89c08ba-8d95-4bd5-9958-5b605d350b0d) |
 | 🎫 Hash & JWT Decoding | [LINK](https://www.loom.com/share/72d0465376644404b62d102005dd7450?sid=b00bb99e-bd63-414f-a1bb-4e4f64f7fc9a) |
-| 🎫 _comingsoon_ | [_comingsoon_](https://www.loom.com/share/your-video-token) |
+| 🎫 Dockerizing App | [LINK](https://www.loom.com/share/a30837310ccd43a2922f35b71b789caf?sid=b787a969-2d72-482d-b177-47fb1a313efe) |
 
 
 ---
@@ -56,15 +56,14 @@ Authenticate the user and issue a **resource-scoped JWT token**.
 {
   "username": "saad",
   "password": "1234",
-  "resource": "hotel"
 }
 ```
 
 **Response:**
 ```json
 {
-  "access_token": "<JWT>",
-  "token_type": "bearer"
+  "access_token": "bearer <JWT>",
+  "token_type": "jwt"
 }
 ```
 
@@ -81,7 +80,7 @@ Authorization: Bearer <JWT>
 **Response:**
 ```json
 {
-  "message": "You accessed hotel data!"
+  "message": "You accessed Event data!"
 }
 ```
 

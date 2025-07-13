@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from models.Hmodels import User
-from structure.pdmodel2 import UserIn
+from structure.Hotel import UserIn
 from config.dependencies import db_inj2
 
 router = APIRouter()
