@@ -1,13 +1,4 @@
-# 🚀✨ **Smart Resource Access Gateway** ✨🚀
-
-```
-   _____                      _     _   _                 _        
-  / ____|                    | |   | | (_)               | |       
- | (___   ___  __ _ _ __ ___ | |__ | |_ _ _ __ ___   __ _| |_ ___  
-  \___ \ / _ \/ _` | '_ ` _ \| '_ \| __| | '_ ` _ \ / _` | __/ _ \ 
-  ____) |  __/ (_| | | | | | | |_) | |_| | | | | | | (_| | ||  __/ 
- |_____/ \___|\__,_|_| |_| |_|_.__/ \__|_|_| |_| |_|\__,_|\__\___| 
-```
+# 🚀✨ Smart Resource Access Gateway ✨🚀
 
 > **A blazing-fast, secure API gateway for resource-scoped JWT authentication, event management, and more!**
 
@@ -17,54 +8,9 @@
 
 ---
 
-🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟
+## 📖 What is this project about?
 
-## 💡 Why Use This Gateway?
-
-- ✅ **Production-ready** FastAPI backend
-- 🔒 **JWT authentication** (resource-scoped)
-- 🚦 **Rate limiting** (Redis-powered)
-- 🪣 **Audit logging** (AWS S3/DynamoDB)
-- 🚨 **Abuse alerts** (SNS)
-- 🐳 **Dockerized** for easy deployment
-- ☁️ **AWS-ready** (ECS, Secrets, S3, CloudWatch)
-- 🧑‍💻 **Developer-friendly** endpoints
-- 🏆 **Battle-tested** for event management
-
-> **_"Plug, play, and protect your microservices with style!"_**
-
-🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟
-
----
-
-## ⚡ Quickstart Checklist
-
-- [x] 🛒 **Clone repo & install dependencies**
-- [x] 🚀 **Run FastAPI app**
-- [x] 🟢 **Start Redis for rate limiting**
-- [ ] ☁️ **Configure AWS (optional, for advanced features)**
-
----
-
-## 🧩 What You Get
-
-| 🔒 Auth | 🎫 JWT | 🚦 Rate Limit | 🪣 Audit Log | 🚨 Alerts | 🐳 Docker | ☁️ AWS Ready |
-|---------|--------|--------------|-------------|-----------|-----------|-------------|
-| ✅      | ✅     | ✅           | ✅          | ✅        | ✅        | ✅          |
-
----
-
-## 🥧 Feature Distribution
-
-```mermaid
-pie
-    title Features by Focus
-    "Security" : 30
-    "Scalability" : 20
-    "Dev Experience" : 20
-    "Cloud Native" : 15
-    "Observability" : 15
-```
+Smart Resource Access Gateway is a FastAPI-based API gateway that authenticates users, issues resource-scoped JWT tokens, and provides a robust event management backend. It features rate limiting (Redis), audit logging (AWS S3/DynamoDB), alerting (SNS), and is designed for scalable, secure backend engineering. The project is production-ready, cloud-deployable, and developer-friendly.
 
 ---
 
@@ -79,29 +25,18 @@ graph TD
     A[User] -->|POST /events/login| B[Login]
     B -->|JWT| A
     A -->|GET /events/getuser| C[Get User]
-    A -->|GET /events/events| D[Get Events]
-    A -->|POST /events/addevent| E[Add Event]
+    A -->|GET /events/getalluser| D[Get All Users]
+    A -->|POST /events/adduser| E[Add User]
+    A -->|GET /events/events| F[Get Events]
+    A -->|POST /events/addevent| G[Add Event]
+    A -->|GET /events/orginfo| H[Get Org Info]
+    A -->|PUT /events/orginfo| I[Update Org Info]
+    A -->|GET /events/participants| J[Get Participants]
+    A -->|GET /events/getupi| K[Get UPI IDs]
+    A -->|POST /events/addupi| L[Add UPI]
+    A -->|PUT /events/updateupi| M[Update UPI]
+    A -->|DELETE /events/deleteupi| N[Delete UPI]
 ```
-
----
-
-### 📋 Endpoint Summary Table
-
-| Method | Path                  | Description                | Auth |
-|--------|-----------------------|----------------------------|:----:|
-| 🟢 POST   | `/events/login`         | Login, get JWT             |  ❌  |
-| 🔵 GET    | `/events/getuser`       | Get current user info      |  ✅  |
-| 🔵 GET    | `/events/getalluser`    | Get all users              |  ❌  |
-| 🟢 POST   | `/events/adduser`       | Add user (superuser only)  |  ✅  |
-| 🔵 GET    | `/events/events`        | Get all events             |  ✅  |
-| 🟢 POST   | `/events/addevent`      | Add event                  |  ❌  |
-| 🔵 GET    | `/events/orginfo`       | Get org info               |  ❌  |
-| 🟡 PUT    | `/events/orginfo`       | Update org info            |  ❌  |
-| 🔵 GET    | `/events/participants`  | Get all participants       |  ❌  |
-| 🔵 GET    | `/events/getupi`        | Get all UPI IDs            |  ❌  |
-| 🟢 POST   | `/events/addupi`        | Add UPI ID                 |  ❌  |
-| 🟡 PUT    | `/events/updateupi`     | Update UPI ID              |  ❌  |
-| 🔴 DELETE | `/events/deleteupi`     | Delete UPI ID              |  ❌  |
 
 ---
 
