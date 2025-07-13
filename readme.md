@@ -9,7 +9,6 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.68%2B-00a393)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Redis](https://img.shields.io/badge/Redis-6.0%2B-dc382d)](https://redis.io/)
-[![AWS](https://img.shields.io/badge/AWS-S3%20%7C%20DynamoDB%20%7C%20SNS-ff9900)](https://aws.amazon.com/)
 
 </div>
 
@@ -22,8 +21,7 @@
 - 🔐 **JWT Authentication** with resource-scoped tokens
 - 🎯 **Event Management** with comprehensive CRUD operations
 - ⚡ **Rate Limiting** powered by Redis
-- 📊 **Audit Logging** via AWS S3 & DynamoDB
-- 🚨 **Real-time Alerting** through AWS SNS
+- 📊 **Audit Logging** for request tracking
 - ☁️ **Cloud-Native** architecture for scalability
 - 🛡️ **Security-First** design principles
 
@@ -64,7 +62,7 @@ sequenceDiagram
     participant Gateway
     participant Auth
     participant DB
-    participant S3
+    participant Logs
     
     Client->>Gateway: API Request
     Note over Client,Gateway: Authorization: Bearer <JWT>
@@ -76,8 +74,8 @@ sequenceDiagram
     Gateway->>DB: Execute Request
     DB-->>Gateway: Response Data
     
-    Gateway->>S3: Log Audit Trail
-    Note over S3: Request, Response, User, Timestamp
+    Gateway->>Logs: Log Audit Trail
+    Note over Logs: Request, Response, User, Timestamp
     
     Gateway-->>Client: API Response
     Note over Gateway,Client: Protected resource data
@@ -373,7 +371,7 @@ Authorization: Bearer <JWT_TOKEN>
 
 - Python 3.9+
 - Redis Server
-- AWS Account (for S3, DynamoDB, SNS)
+- Database (PostgreSQL recommended)
 
 ### Quick Start
 
@@ -389,8 +387,6 @@ pip install -r requirements.txt
 export DATABASE_URL="your_database_url"
 export REDIS_URL="your_redis_url"
 export JWT_SECRET_KEY="your_secret_key"
-export AWS_ACCESS_KEY_ID="your_aws_key"
-export AWS_SECRET_ACCESS_KEY="your_aws_secret"
 
 # Run the application
 uvicorn main:app --reload
@@ -403,8 +399,6 @@ uvicorn main:app --reload
 | `DATABASE_URL` | Database connection string | ✅ |
 | `REDIS_URL` | Redis connection string | ✅ |
 | `JWT_SECRET_KEY` | Secret key for JWT signing | ✅ |
-| `AWS_ACCESS_KEY_ID` | AWS access key | ✅ |
-| `AWS_SECRET_ACCESS_KEY` | AWS secret key | ✅ |
 | `RATE_LIMIT_REQUESTS` | Max requests per minute | ❌ (default: 100) |
 
 ---
@@ -437,13 +431,7 @@ graph TB
     
     subgraph "Data Layer"
         DB[(PostgreSQL)]
-        S3[(AWS S3)]
-        DynamoDB[(DynamoDB)]
-    end
-    
-    subgraph "Monitoring"
-        SNS[AWS SNS]
-        Logs[CloudWatch]
+        Logs[(Application Logs)]
     end
     
     Web --> LB
@@ -462,11 +450,7 @@ graph TB
     Users --> DB
     Org --> DB
     
-    Gateway --> S3
-    Gateway --> DynamoDB
-    Gateway --> SNS
-    
-    SNS --> Logs
+    Gateway --> Logs
 ```
 
 ---
@@ -475,10 +459,9 @@ graph TB
 
 - **🔐 JWT Authentication**: Resource-scoped tokens with configurable expiration
 - **⚡ Rate Limiting**: Redis-based request throttling
-- **📊 Audit Logging**: Complete request/response logging to AWS S3
+- **📊 Audit Logging**: Complete request/response logging
 - **🔒 CORS Protection**: Configurable cross-origin resource sharing
 - **🛡️ Input Validation**: Pydantic models for request validation
-- **🚨 Real-time Alerts**: AWS SNS integration for security events
 
 ---
 
@@ -513,6 +496,12 @@ graph TB
 - [ ] Kubernetes deployment manifests
 - [ ] CI/CD pipeline with GitHub Actions
 - [ ] Infrastructure as Code (Terraform)
+
+### ☁️ Cloud Integration (Future)
+- [ ] AWS S3 integration for audit logging
+- [ ] DynamoDB for scalable data storage
+- [ ] AWS SNS for real-time alerting
+- [ ] CloudWatch for monitoring and metrics
 
 ---
 
@@ -587,12 +576,6 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 ---
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
 ## 👨‍💻 Author & Maintainer
 
 <div align="center">
@@ -602,13 +585,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 [![GitHub](https://img.shields.io/badge/GitHub-@saad1901-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/saad1901)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-saad99-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/saad99)
-[![Email](https://img.shields.io/badge/Email-Contact-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:your.email@example.com)
+[![Email](https://img.shields.io/badge/Email-Contact-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:saadiqbal1921@gmail.com)
 
 ---
 
 <p>
   <b>⭐ If you found this project helpful, please give it a star! ⭐</b><br>
-  <sub>Made with ❤️ and lots of ☕</sub>
+  <sub>Made with ❤️ by Saad</sub>
 </p>
 
 </div>
