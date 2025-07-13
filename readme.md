@@ -7,7 +7,6 @@
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/your-username/smart-access-gateway/actions)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.68%2B-00a393)](https://fastapi.tiangolo.com/)
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Redis](https://img.shields.io/badge/Redis-6.0%2B-dc382d)](https://redis.io/)
 
 </div>
