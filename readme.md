@@ -20,6 +20,7 @@ Smart Resource Access Gateway is a FastAPI-based API gateway that authenticates 
 
 ### 📊 Visual API Flow
 
+#### 1️⃣ Auth, User, and Event Endpoints
 ```mermaid
 graph TD
     A[User] -->|POST /events/login| B[Login]
@@ -29,13 +30,18 @@ graph TD
     A -->|POST /events/adduser| E[Add User]
     A -->|GET /events/events| F[Get Events]
     A -->|POST /events/addevent| G[Add Event]
-    A -->|GET /events/orginfo| H[Get Org Info]
-    A -->|PUT /events/orginfo| I[Update Org Info]
-    A -->|GET /events/participants| J[Get Participants]
-    A -->|GET /events/getupi| K[Get UPI IDs]
-    A -->|POST /events/addupi| L[Add UPI]
-    A -->|PUT /events/updateupi| M[Update UPI]
-    A -->|DELETE /events/deleteupi| N[Delete UPI]
+```
+
+#### 2️⃣ Organization, Participant, and UPI Endpoints
+```mermaid
+graph TD
+    U[User] -->|GET /events/orginfo| V[Get Org Info]
+    U -->|PUT /events/orginfo| W[Update Org Info]
+    U -->|GET /events/participants| X[Get Participants]
+    U -->|GET /events/getupi| Y[Get UPI IDs]
+    U -->|POST /events/addupi| Z[Add UPI]
+    U -->|PUT /events/updateupi| AA[Update UPI]
+    U -->|DELETE /events/deleteupi| AB[Delete UPI]
 ```
 
 ---
@@ -216,110 +222,4 @@ Get all UPI IDs.
   { "id": 1, "name": "Org UPI", "upi_id": "org@upi", "nickname": "main" }
 ]
 ```
-</details>
-
-<details>
-<summary>➕ <b>POST /events/addupi</b></summary>
-
-Add a new UPI ID.
-
-**Request:**
-```json
-{
-  "name": "Org UPI",
-  "upi_id": "org@upi",
-  "nickname": "main"
-}
-```
-**Response:**
-```json
-{ "Success" }
-```
-</details>
-
-<details>
-<summary>✏️ <b>PUT /events/updateupi</b></summary>
-
-Update a UPI ID.
-
-**Request:**
-```json
-{
-  "id": 1,
-  "name": "Org UPI",
-  "upi_id": "org@upi",
-  "nickname": "main"
-}
-```
-**Response:**
-```json
-{ "details": "UPI ID updated Successfully" }
-```
-</details>
-
-<details>
-<summary>❌ <b>DELETE /events/deleteupi</b></summary>
-
-Delete a UPI ID.
-
-**Query Param:** `id=1`
-
-**Response:**
-```json
-{ "details": "UPI ID deleted Successfully" }
-```
-</details>
-
----
-
-## 🗂️ Folder Structure
-
-```text
-project/
-├── main.py
-├── routers/         # 🚦 API Routers
-│   ├── events.py
-│   ├── hotels.py
-│   ├── jwtSec.py
-│   └── test.py
-├── config/          # ⚙️ Config & Dependencies
-│   ├── authentication.py
-│   └── dependencies.py
-├── models/          # 🗄️ Data Models
-│   ├── djangomodels.py
-│   ├── Emodels.py
-│   └── Hmodels.py
-├── structure/       # 🏗️ Domain Structures
-│   ├── Event.py
-│   └── Hotel.py
-├── testing/         # 🧪 Tests & Hashing
-│   ├── __init__.py
-│   ├── hashing.py
-│   └── testmain.py
-├── requirements.txt
-├── Dockerfile
-└── readme.md
-```
-
----
-
-## 🧠 Future Ideas
-- 🔁 Refresh token support
-- 🔒 Role-based permissions (admin, guest)
-- 🚧 Token revocation via Redis
-- 🧩 Multi-tenant resource logic
-
----
-
-## 👨‍💻 Author & Credits
-
-**Mohammad Saad**  
-Backend + Cloud + Security Enthusiast  
-[![GitHub](https://img.shields.io/badge/GitHub-@saad1901-black?logo=github)](https://github.com/saad1901)  
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-saad99-blue?logo=linkedin)](https://www.linkedin.com/in/saad99)
-
----
-
-<p align="center">
-  Made with ❤️ by Mohammad Saad
-</p>
+</
