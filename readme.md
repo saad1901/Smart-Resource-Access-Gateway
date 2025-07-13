@@ -222,4 +222,31 @@ Get all UPI IDs.
   { "id": 1, "name": "Org UPI", "upi_id": "org@upi", "nickname": "main" }
 ]
 ```
-</
+</details>
+
+---
+
+## 🧠 Future Ideas
+- 🔁 Refresh token support
+- 🔒 Role-based permissions (admin, guest)
+- 🚧 Token revocation via Redis
+- 🧩 Multi-tenant resource logic
+
+---
+
+## 👨‍💻 Author & Credits
+
+**Mohammad Saad**  
+Backend + Cloud + Security Enthusiast  
+[![GitHub](https://img.shields.io/badge/GitHub-@saad1901-black?logo=github)](https://github.com/saad1901)  
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-saad99-blue?logo=linkedin)](https://www.linkedin.com/in/saad99)
+
+---
+
+<p align="center">
+  <b>Made with ❤️ by Mohammad Saad</b><br>
+  <a href="https://github.com/saad1901"><img src="https://img.shields.io/badge/GitHub-@saad1901-black?logo=github" alt="GitHub"></a>
+  <a href="https://www.linkedin.com/in/saad99"><img src="https://img.shields.io/badge/LinkedIn-saad99-blue?logo=linkedin" alt="LinkedIn"></a>
+</p>
+
+---
