@@ -107,17 +107,8 @@ graph TD
     A[User] -->|POST /events/login| B[Login]
     B -->|JWT| A
     A -->|GET /events/getuser| C[Get User]
-    A -->|GET /events/getalluser| D[Get All Users]
-    A -->|POST /events/adduser| E[Add User]
-    A -->|GET /events/events| F[Get Events]
-    A -->|POST /events/addevent| G[Add Event]
-    A -->|GET /events/orginfo| H[Get Org Info]
-    A -->|PUT /events/orginfo| I[Update Org Info]
-    A -->|GET /events/participants| J[Get Participants]
-    A -->|GET /events/getupi| K[Get UPI IDs]
-    A -->|POST /events/addupi| L[Add UPI]
-    A -->|PUT /events/updateupi| M[Update UPI]
-    A -->|DELETE /events/deleteupi| N[Delete UPI]
+    A -->|GET /events/events| D[Get Events]
+    A -->|POST /events/addevent| E[Add Event]
 ```
 
 ---
