@@ -1,252 +1,614 @@
 # 🚀✨ Smart Resource Access Gateway ✨🚀
 
+<div align="center">
+
 > **A blazing-fast, secure API gateway for resource-scoped JWT authentication, event management, and more!**
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/your-username/smart-access-gateway/actions)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.68%2B-00a393)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Redis](https://img.shields.io/badge/Redis-6.0%2B-dc382d)](https://redis.io/)
+[![AWS](https://img.shields.io/badge/AWS-S3%20%7C%20DynamoDB%20%7C%20SNS-ff9900)](https://aws.amazon.com/)
+
+</div>
 
 ---
 
-## 📖 What is this project about?
+## 📖 About This Project
 
-Smart Resource Access Gateway is a FastAPI-based API gateway that authenticates users, issues resource-scoped JWT tokens, and provides a robust event management backend. It features rate limiting (Redis), audit logging (AWS S3/DynamoDB), alerting (SNS), and is designed for scalable, secure backend engineering. The project is production-ready, cloud-deployable, and developer-friendly.
+**Smart Resource Access Gateway** is a production-ready FastAPI-based API gateway that provides:
+
+- 🔐 **JWT Authentication** with resource-scoped tokens
+- 🎯 **Event Management** with comprehensive CRUD operations
+- ⚡ **Rate Limiting** powered by Redis
+- 📊 **Audit Logging** via AWS S3 & DynamoDB
+- 🚨 **Real-time Alerting** through AWS SNS
+- ☁️ **Cloud-Native** architecture for scalability
+- 🛡️ **Security-First** design principles
 
 ---
 
-## 🧑‍💻 Event API Endpoints
+## 🔄 Authentication & Request Flow
 
-> **Note:** 🏨 Hotel endpoints are **not yet implemented**. The following endpoints are for the Event system only.
+### 1️⃣ JWT Authentication Flow
 
-### 📊 Visual API Flow
-
-#### 1️⃣ Auth, User, and Event Endpoints
 ```mermaid
-graph TD
-    A[User] -->|POST /events/login| B[Login]
-    B -->|JWT| A
-    A -->|GET /events/getuser| C[Get User]
-    A -->|GET /events/getalluser| D[Get All Users]
-    A -->|POST /events/adduser| E[Add User]
-    A -->|GET /events/events| F[Get Events]
-    A -->|POST /events/addevent| G[Add Event]
+sequenceDiagram
+    participant Client
+    participant Gateway
+    participant Auth
+    participant Redis
+    
+    Client->>Gateway: POST /events/login
+    Note over Client,Gateway: {"username": "saad", "password": "1234"}
+    
+    Gateway->>Auth: Validate Credentials
+    Auth-->>Gateway: User Verified
+    
+    Gateway->>Redis: Check Rate Limit
+    Redis-->>Gateway: Rate OK
+    
+    Gateway->>Gateway: Generate JWT Token
+    Note over Gateway: Resource-scoped token with claims
+    
+    Gateway-->>Client: JWT Token
+    Note over Gateway,Client: {"Token": "Bearer <JWT>", "Token Type": "access/jwt"}
 ```
 
-#### 2️⃣ Organization, Participant, and UPI Endpoints
+### 2️⃣ Authenticated Request Flow
+
 ```mermaid
-graph TD
-    U[User] -->|GET /events/orginfo| V[Get Org Info]
-    U -->|PUT /events/orginfo| W[Update Org Info]
-    U -->|GET /events/participants| X[Get Participants]
-    U -->|GET /events/getupi| Y[Get UPI IDs]
-    U -->|POST /events/addupi| Z[Add UPI]
-    U -->|PUT /events/updateupi| AA[Update UPI]
-    U -->|DELETE /events/deleteupi| AB[Delete UPI]
+sequenceDiagram
+    participant Client
+    participant Gateway
+    participant Auth
+    participant DB
+    participant S3
+    
+    Client->>Gateway: API Request
+    Note over Client,Gateway: Authorization: Bearer <JWT>
+    
+    Gateway->>Auth: Validate JWT
+    Auth->>Auth: Verify Signature & Claims
+    Auth-->>Gateway: Token Valid
+    
+    Gateway->>DB: Execute Request
+    DB-->>Gateway: Response Data
+    
+    Gateway->>S3: Log Audit Trail
+    Note over S3: Request, Response, User, Timestamp
+    
+    Gateway-->>Client: API Response
+    Note over Gateway,Client: Protected resource data
 ```
 
 ---
 
-### 📝 Endpoint Details
+## 🛠️ API Endpoints
+
+> **⚠️ Note:** Hotel endpoints are planned but not yet implemented. Current focus is on the Event management system.
+
+### 🔑 Authentication Endpoints
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `POST` | `/events/login` | Authenticate user and get JWT | ❌ |
 
 <details>
-<summary>🔑 <b>POST /events/login</b></summary>
+<summary><b>🔑 POST /events/login</b> - User Authentication</summary>
 
-Authenticate and get a JWT token.
-
-**Request:**
+**Request Body:**
 ```json
 {
   "username": "saad",
   "password": "1234"
 }
 ```
+
 **Response:**
 ```json
 {
-  "Token": "Bearer <JWT>",
+  "Token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "Token Type": "access/jwt"
 }
 ```
+
+**Status Codes:**
+- `200` - Authentication successful
+- `401` - Invalid credentials
+- `429` - Rate limit exceeded
+
 </details>
 
+### 👤 User Management
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/events/getuser` | Get current user info | ✅ |
+| `GET` | `/events/getalluser` | Get all users | ❌ |
+| `POST` | `/events/adduser` | Add new user | ✅ (Superuser) |
+
 <details>
-<summary>👤 <b>GET /events/getuser</b></summary>
+<summary><b>👤 GET /events/getuser</b> - Get Current User</summary>
 
-Get current user info (JWT required).
+**Headers:**
+```
+Authorization: Bearer <JWT_TOKEN>
+```
 
-**Header:**
-```
-Authorization: Bearer <JWT>
-```
 **Response:**
 ```json
 {
   "id": 1,
   "username": "saad",
-  ...
+  "email": "saad@example.com",
+  "first_name": "Saad",
+  "last_name": "Mohammad",
+  "is_active": true,
+  "created_at": "2024-01-15T10:30:00Z"
 }
 ```
+
 </details>
 
 <details>
-<summary>👥 <b>GET /events/getalluser</b></summary>
-
-Get all users.
+<summary><b>👥 GET /events/getalluser</b> - Get All Users</summary>
 
 **Response:**
 ```json
 [
-  { "id": 1, "username": "saad", ... },
-  { "id": 2, "username": "alex", ... }
+  {
+    "id": 1,
+    "username": "saad",
+    "email": "saad@example.com",
+    "first_name": "Saad",
+    "last_name": "Mohammad"
+  },
+  {
+    "id": 2,
+    "username": "alex",
+    "email": "alex@example.com",
+    "first_name": "Alex",
+    "last_name": "Smith"
+  }
 ]
 ```
+
 </details>
 
 <details>
-<summary>➕ <b>POST /events/adduser</b></summary>
+<summary><b>➕ POST /events/adduser</b> - Add New User</summary>
 
-Add a new user (superuser JWT required).
+**Headers:**
+```
+Authorization: Bearer <SUPERUSER_JWT_TOKEN>
+```
 
-**Request:**
+**Request Body:**
 ```json
 {
   "username": "alex",
-  "password": "pass",
-  "email": "alex@email.com",
+  "password": "securepass123",
+  "email": "alex@example.com",
   "first_name": "Alex",
   "last_name": "Smith"
 }
 ```
+
 **Response:**
 ```json
-{ "User Added Succesfully" }
+{
+  "message": "User Added Successfully",
+  "user_id": 3
+}
 ```
+
 </details>
 
-<details>
-<summary>🗓️ <b>GET /events/events</b></summary>
+### 🗓️ Event Management
 
-Get all events (JWT required).
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/events/events` | Get all events | ✅ |
+| `POST` | `/events/addevent` | Create new event | ✅ |
+
+<details>
+<summary><b>🗓️ GET /events/events</b> - Get All Events</summary>
+
+**Headers:**
+```
+Authorization: Bearer <JWT_TOKEN>
+```
 
 **Response:**
 ```json
 [
   {
-    "title": "Chess Tournament",
+    "id": 1,
+    "title": "Chess Tournament 2024",
+    "description": "Annual chess championship",
     "max_participants": 100,
+    "current_participants": 45,
     "status": "published",
-    ...
+    "start_date": "2024-03-15T09:00:00Z",
+    "end_date": "2024-03-17T18:00:00Z",
+    "location": "Main Auditorium",
+    "created_by": "saad"
   }
 ]
 ```
+
 </details>
 
 <details>
-<summary>🆕 <b>POST /events/addevent</b></summary>
+<summary><b>🆕 POST /events/addevent</b> - Create New Event</summary>
 
-Add a new event.
+**Headers:**
+```
+Authorization: Bearer <JWT_TOKEN>
+```
 
-**Request:**
+**Request Body:**
 ```json
 {
-  "title": "Chess Tournament",
+  "title": "Chess Tournament 2024",
+  "description": "Annual chess championship",
   "max_participants": 100,
-  "status": "published",
-  ...
+  "status": "draft",
+  "start_date": "2024-03-15T09:00:00Z",
+  "end_date": "2024-03-17T18:00:00Z",
+  "location": "Main Auditorium"
 }
 ```
-</details>
-
-<details>
-<summary>🏢 <b>GET /events/orginfo</b></summary>
-
-Get organization info.
 
 **Response:**
 ```json
 {
-  "name": "Event Org",
-  "add": "123 Main St",
-  "wp": "+1234567890",
-  "email": "org@email.com"
+  "message": "Event Created Successfully",
+  "event_id": 1,
+  "status": "draft"
 }
 ```
+
 </details>
 
+### 🏢 Organization Management
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/events/orginfo` | Get organization info | ❌ |
+| `PUT` | `/events/orginfo` | Update organization info | ✅ |
+
 <details>
-<summary>🏢 <b>PUT /events/orginfo</b></summary>
+<summary><b>🏢 GET /events/orginfo</b> - Get Organization Info</summary>
 
-Update organization info.
-
-**Request:**
-```json
-{
-  "name": "Event Org",
-  "add": "123 Main St",
-  "wp": "+1234567890",
-  "email": "org@email.com"
-}
-```
 **Response:**
 ```json
-{ "Details Updated Sucessfully" }
+{
+  "name": "Event Management Org",
+  "address": "123 Main Street, City, State 12345",
+  "whatsapp": "+1234567890",
+  "email": "contact@eventorg.com",
+  "website": "https://eventorg.com",
+  "established": "2020-01-01"
+}
 ```
+
 </details>
 
-<details>
-<summary>🧑‍🤝‍🧑 <b>GET /events/participants</b></summary>
+### 🧑‍🤝‍🧑 Participant Management
 
-Get all participants.
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/events/participants` | Get all participants | ✅ |
+
+<details>
+<summary><b>🧑‍🤝‍🧑 GET /events/participants</b> - Get All Participants</summary>
+
+**Headers:**
+```
+Authorization: Bearer <JWT_TOKEN>
+```
 
 **Response:**
 ```json
 [
   {
+    "id": 1,
     "full_name": "John Doe",
-    "registration_id": "...",
+    "email": "john@example.com",
+    "registration_id": "REG-2024-001",
+    "event_id": 1,
+    "event_title": "Chess Tournament 2024",
     "status": "registered",
-    ...
+    "registration_date": "2024-01-20T14:30:00Z"
   }
 ]
 ```
+
 </details>
+
+### 🏦 Payment Integration (UPI)
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/events/getupi` | Get all UPI IDs | ❌ |
+| `POST` | `/events/addupi` | Add new UPI ID | ✅ |
+| `PUT` | `/events/updateupi` | Update UPI ID | ✅ |
+| `DELETE` | `/events/deleteupi/{id}` | Delete UPI ID | ✅ |
 
 <details>
-<summary>🏦 <b>GET /events/getupi</b></summary>
+<summary><b>🏦 UPI Management Endpoints</b></summary>
 
-Get all UPI IDs.
-
-**Response:**
+**GET /events/getupi Response:**
 ```json
 [
-  { "id": 1, "name": "Org UPI", "upi_id": "org@upi", "nickname": "main" }
+  {
+    "id": 1,
+    "name": "Organization UPI",
+    "upi_id": "eventorg@paytm",
+    "nickname": "main",
+    "is_active": true
+  }
 ]
 ```
+
+**POST /events/addupi Request:**
+```json
+{
+  "name": "Secondary UPI",
+  "upi_id": "backup@phonepe",
+  "nickname": "backup"
+}
+```
+
 </details>
 
 ---
 
-## 🧠 Future Ideas
-- 🔁 Refresh token support
-- 🔒 Role-based permissions (admin, guest)
-- 🚧 Token revocation via Redis
-- 🧩 Multi-tenant resource logic
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.9+
+- Redis Server
+- AWS Account (for S3, DynamoDB, SNS)
+
+### Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/saad1901/smart-access-gateway.git
+cd smart-access-gateway
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variables
+export DATABASE_URL="your_database_url"
+export REDIS_URL="your_redis_url"
+export JWT_SECRET_KEY="your_secret_key"
+export AWS_ACCESS_KEY_ID="your_aws_key"
+export AWS_SECRET_ACCESS_KEY="your_aws_secret"
+
+# Run the application
+uvicorn main:app --reload
+```
+
+### Environment Variables
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `DATABASE_URL` | Database connection string | ✅ |
+| `REDIS_URL` | Redis connection string | ✅ |
+| `JWT_SECRET_KEY` | Secret key for JWT signing | ✅ |
+| `AWS_ACCESS_KEY_ID` | AWS access key | ✅ |
+| `AWS_SECRET_ACCESS_KEY` | AWS secret key | ✅ |
+| `RATE_LIMIT_REQUESTS` | Max requests per minute | ❌ (default: 100) |
 
 ---
 
-## 👨‍💻 Author & Credits
+## 🏗️ Architecture
+
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        Web[Web App]
+        Mobile[Mobile App]
+        API_Client[API Client]
+    end
+    
+    subgraph "Gateway Layer"
+        LB[Load Balancer]
+        Gateway[FastAPI Gateway]
+    end
+    
+    subgraph "Authentication"
+        JWT[JWT Service]
+        Redis[(Redis Cache)]
+    end
+    
+    subgraph "Core Services"
+        Events[Event Service]
+        Users[User Service]
+        Org[Organization Service]
+    end
+    
+    subgraph "Data Layer"
+        DB[(PostgreSQL)]
+        S3[(AWS S3)]
+        DynamoDB[(DynamoDB)]
+    end
+    
+    subgraph "Monitoring"
+        SNS[AWS SNS]
+        Logs[CloudWatch]
+    end
+    
+    Web --> LB
+    Mobile --> LB
+    API_Client --> LB
+    
+    LB --> Gateway
+    Gateway --> JWT
+    JWT --> Redis
+    
+    Gateway --> Events
+    Gateway --> Users
+    Gateway --> Org
+    
+    Events --> DB
+    Users --> DB
+    Org --> DB
+    
+    Gateway --> S3
+    Gateway --> DynamoDB
+    Gateway --> SNS
+    
+    SNS --> Logs
+```
+
+---
+
+## 🛡️ Security Features
+
+- **🔐 JWT Authentication**: Resource-scoped tokens with configurable expiration
+- **⚡ Rate Limiting**: Redis-based request throttling
+- **📊 Audit Logging**: Complete request/response logging to AWS S3
+- **🔒 CORS Protection**: Configurable cross-origin resource sharing
+- **🛡️ Input Validation**: Pydantic models for request validation
+- **🚨 Real-time Alerts**: AWS SNS integration for security events
+
+---
+
+## 🧠 Roadmap & Future Ideas
+
+### 🔄 Authentication Enhancements
+- [ ] Refresh token support with automatic rotation
+- [ ] Multi-factor authentication (MFA)
+- [ ] OAuth2 integration (Google, GitHub, Microsoft)
+- [ ] Session management with Redis
+
+### 🔐 Security Improvements
+- [ ] Role-based access control (RBAC)
+- [ ] API key management
+- [ ] Token revocation lists
+- [ ] Advanced rate limiting with user tiers
+
+### 🏗️ Architecture Upgrades
+- [ ] Microservices decomposition
+- [ ] Event-driven architecture with message queues
+- [ ] GraphQL API support
+- [ ] Multi-tenant resource isolation
+
+### 📊 Monitoring & Analytics
+- [ ] Real-time dashboards
+- [ ] Performance metrics
+- [ ] Usage analytics
+- [ ] Health check endpoints
+
+### 🚀 Deployment & DevOps
+- [ ] Docker containerization
+- [ ] Kubernetes deployment manifests
+- [ ] CI/CD pipeline with GitHub Actions
+- [ ] Infrastructure as Code (Terraform)
+
+---
+
+## 📄 API Documentation
+
+### Interactive Documentation
+- **Swagger UI**: `/docs` (when server is running)
+- **ReDoc**: `/redoc` (when server is running)
+
+### Response Format Standards
+
+**Success Response:**
+```json
+{
+  "success": true,
+  "data": { ... },
+  "message": "Operation completed successfully"
+}
+```
+
+**Error Response:**
+```json
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid input provided",
+    "details": { ... }
+  }
+}
+```
+
+**Status Codes:**
+- `200` - Success
+- `201` - Created
+- `400` - Bad Request
+- `401` - Unauthorized
+- `403` - Forbidden
+- `404` - Not Found
+- `429` - Too Many Requests
+- `500` - Internal Server Error
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+### Development Setup
+
+```bash
+# Fork and clone the repo
+git clone https://github.com/YOUR_USERNAME/smart-access-gateway.git
+
+# Create a virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Run tests
+pytest
+
+# Run linting
+flake8 src/
+black src/
+
+# Start development server
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 Author & Maintainer
+
+<div align="center">
 
 **Mohammad Saad**  
-Backend + Cloud + Security Enthusiast  
-[![GitHub](https://img.shields.io/badge/GitHub-@saad1901-black?logo=github)](https://github.com/saad1901)  
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-saad99-blue?logo=linkedin)](https://www.linkedin.com/in/saad99)
+*Backend + Cloud + Security Enthusiast*
+
+[![GitHub](https://img.shields.io/badge/GitHub-@saad1901-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/saad1901)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-saad99-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/saad99)
+[![Email](https://img.shields.io/badge/Email-Contact-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:your.email@example.com)
 
 ---
 
-<p align="center">
-  <b>Made with ❤️ by Mohammad Saad</b><br>
-  <a href="https://github.com/saad1901"><img src="https://img.shields.io/badge/GitHub-@saad1901-black?logo=github" alt="GitHub"></a>
-  <a href="https://www.linkedin.com/in/saad99"><img src="https://img.shields.io/badge/LinkedIn-saad99-blue?logo=linkedin" alt="LinkedIn"></a>
+<p>
+  <b>⭐ If you found this project helpful, please give it a star! ⭐</b><br>
+  <sub>Made with ❤️ and lots of ☕</sub>
 </p>
 
----
+</div>
