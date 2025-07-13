@@ -1,4 +1,15 @@
-# 🔐 **Smart Resource Access Gateway**
+# 🚀✨ **Smart Resource Access Gateway** ✨🚀
+
+```
+   _____                      _     _   _                 _        
+  / ____|                    | |   | | (_)               | |       
+ | (___   ___  __ _ _ __ ___ | |__ | |_ _ _ __ ___   __ _| |_ ___  
+  \___ \ / _ \/ _` | '_ ` _ \| '_ \| __| | '_ ` _ \ / _` | __/ _ \ 
+  ____) |  __/ (_| | | | | | | |_) | |_| | | | | | | (_| | ||  __/ 
+ |_____/ \___|\__,_|_| |_| |_|_.__/ \__|_|_| |_| |_|\__,_|\__\___| 
+```
+
+> **A blazing-fast, secure API gateway for resource-scoped JWT authentication, event management, and more!**
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/your-username/smart-access-gateway/actions)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org/)
@@ -6,36 +17,36 @@
 
 ---
 
-## 🏗️ Architecture Overview
+🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟
 
-```mermaid
-graph TD
-    A[User] -->|Login| B(FastAPI Gateway)
-    B -->|JWT Issued| A
-    B -->|Access| C[Hotel Service]
-    B -->|Access| D[Event Service]
-    B -->|Rate Limit| E[Redis]
-    B -->|Audit Log| F[AWS S3/DynamoDB]
-    B -->|Alerts| G[AWS SNS]
-```
+## 💡 Why Use This Gateway?
 
----
+- ✅ **Production-ready** FastAPI backend
+- 🔒 **JWT authentication** (resource-scoped)
+- 🚦 **Rate limiting** (Redis-powered)
+- 🪣 **Audit logging** (AWS S3/DynamoDB)
+- 🚨 **Abuse alerts** (SNS)
+- 🐳 **Dockerized** for easy deployment
+- ☁️ **AWS-ready** (ECS, Secrets, S3, CloudWatch)
+- 🧑‍💻 **Developer-friendly** endpoints
+- 🏆 **Battle-tested** for event management
 
-## 🎬 Project Walkthrough Videos
+> **_"Plug, play, and protect your microservices with style!"_**
 
-> **Watch the feature demos below:**
-
-| ▶️ Feature                        | Video Link |
-|-----------------------------------|------------|
-| 🧠 Intro & Project Setup          | [Watch](https://www.loom.com/share/4560dc9c0512475a807ecb0e989af0cb?sid=6b30c01a-62ad-47cd-86b7-e237c40c4fd1) |
-| 📦 Databases & Setup              | [Watch](https://www.loom.com/share/4131970b521e479da35a90d11a20eb33?sid=36e4df4d-dfbb-4698-b359-e2c99d8c5c09) |
-| 🎫 JWT Encoding                   | [Watch](https://www.loom.com/share/2970c725894a40ccbc9ada1b1b7ab181?sid=b89c08ba-8d95-4bd5-9958-5b605d350b0d) |
-| 🔑 Hash & JWT Decoding            | [Watch](https://www.loom.com/share/72d0465376644404b62d102005dd7450?sid=b00bb99e-bd63-414f-a1bb-4e4f64f7fc9a) |
-| 🐳 Dockerizing App                | [Watch](https://www.loom.com/share/a30837310ccd43a2922f35b71b789caf?sid=b787a969-2d72-482d-b177-47fb1a313efe) |
+🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟🌈🌟
 
 ---
 
-## 🚀 Features at a Glance
+## ⚡ Quickstart Checklist
+
+- [x] 🛒 **Clone repo & install dependencies**
+- [x] 🚀 **Run FastAPI app**
+- [x] 🟢 **Start Redis for rate limiting**
+- [ ] ☁️ **Configure AWS (optional, for advanced features)**
+
+---
+
+## 🧩 What You Get
 
 | 🔒 Auth | 🎫 JWT | 🚦 Rate Limit | 🪣 Audit Log | 🚨 Alerts | 🐳 Docker | ☁️ AWS Ready |
 |---------|--------|--------------|-------------|-----------|-----------|-------------|
@@ -43,56 +54,17 @@ graph TD
 
 ---
 
-## 🧠 Project Overview
-
-- 🔑 Authenticates users via `username + password`
-- 🎫 Issues **JWT tokens** scoped to specific resources (e.g., `hotel`, `event`)
-- 🛡️ Validates tokens on protected endpoints
-- 🪣 Logs all access (audit logs)
-- 🚨 Sends alerts for abuse
-- ☁️ Fully deployable to AWS (ECS + Secrets + S3 + CloudWatch)
-
----
-
-## 🔄 JWT Flow
+## 🥧 Feature Distribution
 
 ```mermaid
-sequenceDiagram
-    participant U as User
-    participant G as API Gateway
-    participant S as Service (Hotel/Event)
-    U->>G: POST /auth/login (credentials)
-    G->>U: JWT Token (resource-scoped)
-    U->>G: GET /hotel-db (with JWT)
-    G->>G: Validate JWT & Resource
-    G->>S: Forward request if valid
-    S->>G: Data
-    G->>U: Response
+pie
+    title Features by Focus
+    "Security" : 30
+    "Scalability" : 20
+    "Dev Experience" : 20
+    "Cloud Native" : 15
+    "Observability" : 15
 ```
-
----
-
-## ⚡ Quick Start Checklist
-
-- [x] Clone repo & install dependencies
-- [x] Run FastAPI app
-- [x] Start Redis for rate limiting
-- [ ] Configure AWS (optional, for advanced features)
-
----
-
-## 📦 Tech Stack
-
-| Layer         | Tech                  |
-|---------------|-----------------------|
-| Web Framework | FastAPI + Uvicorn     |
-| Auth          | JWT (`python-jose`)   |
-| Rate Limiting | Redis                 |
-| Logging       | AWS S3 / DynamoDB     |
-| Alerts        | AWS SNS               |
-| Deployment    | Docker + ECS + ECR    |
-| Secrets       | AWS Secrets Manager   |
-| CI/CD         | GitHub Actions        |
 
 ---
 
@@ -115,27 +87,29 @@ graph TD
 
 ### 📋 Endpoint Summary Table
 
-| Method | Path                  | Description                | Auth Required |
-|--------|-----------------------|----------------------------|:-------------:|
-| POST   | /events/login         | Login, get JWT             |      ❌       |
-| GET    | /events/getuser       | Get current user info      |      ✅       |
-| GET    | /events/getalluser    | Get all users              |      ❌       |
-| POST   | /events/adduser       | Add user (superuser only)  |      ✅       |
-| GET    | /events/events        | Get all events             |      ✅       |
-| POST   | /events/addevent      | Add event                  |      ❌       |
-| GET    | /events/orginfo       | Get org info               |      ❌       |
-| PUT    | /events/orginfo       | Update org info            |      ❌       |
-| GET    | /events/participants  | Get all participants       |      ❌       |
-| GET    | /events/getupi        | Get all UPI IDs            |      ❌       |
-| POST   | /events/addupi        | Add UPI ID                 |      ❌       |
-| PUT    | /events/updateupi     | Update UPI ID              |      ❌       |
-| DELETE | /events/deleteupi     | Delete UPI ID              |      ❌       |
+| Method | Path                  | Description                | Auth |
+|--------|-----------------------|----------------------------|:----:|
+| 🟢 POST   | `/events/login`         | Login, get JWT             |  ❌  |
+| 🔵 GET    | `/events/getuser`       | Get current user info      |  ✅  |
+| 🔵 GET    | `/events/getalluser`    | Get all users              |  ❌  |
+| 🟢 POST   | `/events/adduser`       | Add user (superuser only)  |  ✅  |
+| 🔵 GET    | `/events/events`        | Get all events             |  ✅  |
+| 🟢 POST   | `/events/addevent`      | Add event                  |  ❌  |
+| 🔵 GET    | `/events/orginfo`       | Get org info               |  ❌  |
+| 🟡 PUT    | `/events/orginfo`       | Update org info            |  ❌  |
+| 🔵 GET    | `/events/participants`  | Get all participants       |  ❌  |
+| 🔵 GET    | `/events/getupi`        | Get all UPI IDs            |  ❌  |
+| 🟢 POST   | `/events/addupi`        | Add UPI ID                 |  ❌  |
+| 🟡 PUT    | `/events/updateupi`     | Update UPI ID              |  ❌  |
+| 🔴 DELETE | `/events/deleteupi`     | Delete UPI ID              |  ❌  |
 
 ---
 
 ### 📝 Endpoint Details
 
-#### 1. 🔑 **POST /events/login**
+<details>
+<summary>🔑 <b>POST /events/login</b></summary>
+
 Authenticate and get a JWT token.
 
 **Request:**
@@ -152,8 +126,11 @@ Authenticate and get a JWT token.
   "Token Type": "access/jwt"
 }
 ```
+</details>
 
-#### 2. 👤 **GET /events/getuser**
+<details>
+<summary>👤 <b>GET /events/getuser</b></summary>
+
 Get current user info (JWT required).
 
 **Header:**
@@ -168,8 +145,11 @@ Authorization: Bearer <JWT>
   ...
 }
 ```
+</details>
 
-#### 3. 👥 **GET /events/getalluser**
+<details>
+<summary>👥 <b>GET /events/getalluser</b></summary>
+
 Get all users.
 
 **Response:**
@@ -179,8 +159,11 @@ Get all users.
   { "id": 2, "username": "alex", ... }
 ]
 ```
+</details>
 
-#### 4. ➕ **POST /events/adduser**
+<details>
+<summary>➕ <b>POST /events/adduser</b></summary>
+
 Add a new user (superuser JWT required).
 
 **Request:**
@@ -197,8 +180,11 @@ Add a new user (superuser JWT required).
 ```json
 { "User Added Succesfully" }
 ```
+</details>
 
-#### 5. 🗓️ **GET /events/events**
+<details>
+<summary>🗓️ <b>GET /events/events</b></summary>
+
 Get all events (JWT required).
 
 **Response:**
@@ -212,8 +198,11 @@ Get all events (JWT required).
   }
 ]
 ```
+</details>
 
-#### 6. 🆕 **POST /events/addevent**
+<details>
+<summary>🆕 <b>POST /events/addevent</b></summary>
+
 Add a new event.
 
 **Request:**
@@ -225,8 +214,11 @@ Add a new event.
   ...
 }
 ```
+</details>
 
-#### 7. 🏢 **GET /events/orginfo**
+<details>
+<summary>🏢 <b>GET /events/orginfo</b></summary>
+
 Get organization info.
 
 **Response:**
@@ -238,8 +230,11 @@ Get organization info.
   "email": "org@email.com"
 }
 ```
+</details>
 
-#### 8. 🏢 **PUT /events/orginfo**
+<details>
+<summary>🏢 <b>PUT /events/orginfo</b></summary>
+
 Update organization info.
 
 **Request:**
@@ -255,8 +250,11 @@ Update organization info.
 ```json
 { "Details Updated Sucessfully" }
 ```
+</details>
 
-#### 9. 🧑‍🤝‍🧑 **GET /events/participants**
+<details>
+<summary>🧑‍🤝‍🧑 <b>GET /events/participants</b></summary>
+
 Get all participants.
 
 **Response:**
@@ -270,8 +268,11 @@ Get all participants.
   }
 ]
 ```
+</details>
 
-#### 10. 🏦 **GET /events/getupi**
+<details>
+<summary>🏦 <b>GET /events/getupi</b></summary>
+
 Get all UPI IDs.
 
 **Response:**
@@ -280,8 +281,11 @@ Get all UPI IDs.
   { "id": 1, "name": "Org UPI", "upi_id": "org@upi", "nickname": "main" }
 ]
 ```
+</details>
 
-#### 11. ➕ **POST /events/addupi**
+<details>
+<summary>➕ <b>POST /events/addupi</b></summary>
+
 Add a new UPI ID.
 
 **Request:**
@@ -296,8 +300,11 @@ Add a new UPI ID.
 ```json
 { "Success" }
 ```
+</details>
 
-#### 12. ✏️ **PUT /events/updateupi**
+<details>
+<summary>✏️ <b>PUT /events/updateupi</b></summary>
+
 Update a UPI ID.
 
 **Request:**
@@ -313,8 +320,11 @@ Update a UPI ID.
 ```json
 { "details": "UPI ID updated Successfully" }
 ```
+</details>
 
-#### 13. ❌ **DELETE /events/deleteupi**
+<details>
+<summary>❌ <b>DELETE /events/deleteupi</b></summary>
+
 Delete a UPI ID.
 
 **Query Param:** `id=1`
@@ -323,60 +333,11 @@ Delete a UPI ID.
 ```json
 { "details": "UPI ID deleted Successfully" }
 ```
+</details>
 
 ---
 
-### 🧾 JWT Structure
-```json
-{
-  "sub": "user_123",
-  "resource": "hotel",
-  "exp": 1725693217
-}
-```
-- `sub` – user ID
-- `resource` – the resource this token is scoped to (e.g., hotel, event)
-- `exp` – expiration timestamp
-
----
-
-## ⚙️ Setup & Run
-
-### 1. Clone & Install
-```bash
-git clone https://github.com/your-username/smart-access-gateway.git
-cd smart-access-gateway
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-### 2. Run App
-```bash
-uvicorn main:app --reload
-```
-
-### 3. Redis (for rate limiting)
-```bash
-docker run -d -p 6379:6379 redis
-```
-
----
-
-## 🌩️ AWS Integration (Advanced)
-
-| Feature  | Service                |
-|----------|------------------------|
-| Secrets  | AWS Secrets Manager    |
-| Logs     | AWS S3 / DynamoDB      |
-| Alerts   | AWS SNS                |
-| Hosting  | ECS Fargate or EC2     |
-| CI/CD    | GitHub Actions         |
-| Metrics  | AWS CloudWatch         |
-
----
-
-## 📁 Folder Structure
+## 🗂️ Folder Structure
 
 ```text
 project/
@@ -415,8 +376,15 @@ project/
 
 ---
 
-## 🧑‍🎓 Author
+## 👨‍💻 Author & Credits
+
 **Mohammad Saad**  
 Backend + Cloud + Security Enthusiast  
-🌐 GitHub: [@saad1901](https://github.com/saad1901)  
-📌 LinkedIn: [https://www.linkedin.com/in/saad99]
+[![GitHub](https://img.shields.io/badge/GitHub-@saad1901-black?logo=github)](https://github.com/saad1901)  
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-saad99-blue?logo=linkedin)](https://www.linkedin.com/in/saad99)
+
+---
+
+<p align="center">
+  Made with ❤️ by Mohammad Saad
+</p>
